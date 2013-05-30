@@ -83,33 +83,31 @@ class nzpMedia{
         }
         return false;
     }
-	static function getAllMedia($code){
-		$return = array();
-		//Loop through the supported providers, to search for each pattern individually
-		foreach(self::$providers as $provider=>$arr){
-			$matches = array();
-			//Finds patterns for current provider
-			preg_match_all($arr['pattern'], $code, $matches, PREG_SET_ORDER);
-			if(count($matches)>0){
-				foreach($matches as $match){
-					//Assigns nzpMediaObjs
-					$return[$provider][] = new nzpMediaObj($provider,end($match));
-				}
-			}
-		}
-		return count($return)>0 ? $return : false;
-	}
-	static function replaceAllMedia($code, $replace="embed"){
-		foreach(self::$providers as $provider=>$arr){
-			$code = preg_replace_callback($arr['pattern'], function($matches){
-				$obj = nzpMedia::getInfo($matches[0]);
-				// echo "<pre>";var_dump($obj);echo "</pre>";
-				// echo $obj->embed();
-				return $obj->embed();
-			}, $code);
-		}
-		return $code;
-	}
+    static function getAllMedia($code){
+        $return = array();
+        // Loop through the supported providers, to search for each pattern individually
+        foreach(self::$providers as $provider=>$arr){
+            $matches = array();
+            // Finds patterns for current provider
+            preg_match_all($arr['pattern'], $code, $matches, PREG_SET_ORDER);
+            if(count($matches)>0){
+                foreach($matches as $match){
+                    // Assigns nzpMediaObjs
+                    $return[$provider][] = new nzpMediaObj($provider,end($match));
+                }
+            }
+        }
+        return count($return)>0 ? $return : false;
+    }
+    static function embedAllMedia($code){
+        foreach(self::$providers as $provider=>$arr){
+            $code = preg_replace_callback($arr['pattern'], function($matches){
+                $obj = nzpMedia::getInfo($matches[0]);
+                return $obj->embed;
+            }, $code);
+        }
+        return $code;
+    }
     static function addApiKey($provider,$key){
         self::$providers[$provider]['api_key'] = $key;
     }

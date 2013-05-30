@@ -12,4 +12,4 @@ foreach($everything as $provider=>$objs){
 
 echo "<hr>";
 
-echo $replaced = nzpMedia::replaceAllMedia($much_code);
+echo $replaced = nzpMedia::embedAllMedia($much_code);
