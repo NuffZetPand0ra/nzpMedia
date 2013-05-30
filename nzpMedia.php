@@ -93,7 +93,7 @@ class nzpMedia{
 			if(count($matches)>0){
 				foreach($matches as $match){
 					//Assigns nzpMediaObjs
-					$return[$provider][] = new nzpMediaObj($provider,end($matches));
+					$return[$provider][] = new nzpMediaObj($provider,end($match));
 				}
 			}
 		}
