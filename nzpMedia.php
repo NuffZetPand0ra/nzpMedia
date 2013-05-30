@@ -83,6 +83,22 @@ class nzpMedia{
         }
         return false;
     }
+	static function getAllMedia($code){
+		$return = array();
+		//Loop through the supported providers, to search for each pattern individually
+		foreach(self::$providers as $provider=>$arr){
+			$matches = array();
+			//Finds patterns for current provider
+			preg_match_all($arr['pattern'], $code, $matches, PREG_SET_ORDER);
+			if(count($matches)>0){
+				foreach($matches as $match){
+					//Assigns nzpMediaObjs
+					$return[$provider][] = new nzpMediaObj($provider,end($matches));
+				}
+			}
+		}
+		return count($return)>0 ? $return : false;
+	}
     static function addApiKey($provider,$key){
         self::$providers[$provider]['api_key'] = $key;
     }
